@@ -34,3 +34,13 @@ The module has no external Go dependencies. The Go 1.23 language baseline is com
 4. Compare actual tunnel bonding engines with single-flow TCP, UDP, impairment and failure tests. Never represent load balancing as true bonding.
 5. Add QoS, Starlink telemetry, secure management, optional MikroTik integration and UI after the networking foundations pass.
 6. Validate hardware, recovery, security and long-duration tests before producing installable images. The initial release artifact is only a diagnostic CLI, not a router OS.
+
+## WAN configuration validation
+
+`wanctl validate-config FILE` validates a local JSON document without applying it:
+
+```json
+{"management_interface":"eth0","links":[{"id":"wan-1","interface":"eth1","mode":"dhcp","weight":50},{"id":"wan-2","interface":"eth2","mode":"dhcp","weight":50}]}
+```
+
+Supports 1–16 explicit WAN identities, unique interfaces, separate management interface, weights 1–100, DHCP and on-link static IPv4 CIDRs. Identical addresses and gateways across different interfaces are permitted deliberately; future isolated routing must be implemented and tested before applying settings. PPPoE, IPv6, duplicate-key rejection, live device validation and network mutation are not implemented in this slice.
